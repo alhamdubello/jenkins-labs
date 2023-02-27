@@ -1,0 +1,11 @@
+---
+# tasks file for mysql
+#
+
+- name: "Loading CentOS 8.5 playbooks"
+  ansible.builtin.include_tasks: "CentOS/8.5.yml"
+  when: ansible_os_family == 'RedHat'
+
+- name: "Loading Ubuntu 22.04 playbooks"
+  ansible.builtin.include_tasks: "Ubuntu/22.04.yml"
+  when: ansible_os_family == 'Debian' 

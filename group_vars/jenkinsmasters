@@ -1,0 +1,7 @@
+---
+centos_pkgs:
+  - "java-11-openjdk"
+rpm_key_value: "https://pkg.jenkins.io/redhat/jenkins.io.key"
+jenkins_centos_repo_name: "jenkins"
+jenkins_centos_repo_des: "jenkins"
+jenkins_centos_repo_path: "http://pkg.jenkins.io/redhat"

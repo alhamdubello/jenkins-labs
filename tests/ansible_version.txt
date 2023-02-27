@@ -1,0 +1,9 @@
+ansible [core 2.14.1]
+  config file = /root/ansible-devops/ansible.cfg
+  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /root/.env/lib/python3.9/site-packages/ansible
+  ansible collection location = /root/ansible-devops/collections
+  executable location = /root/.env/bin/ansible
+  python version = 3.9.16 (main, Dec  8 2022, 00:00:00) [GCC 11.3.1 20221121 (Red Hat 11.3.1-4)] (/root/.env/bin/python)
+  jinja version = 3.1.2
+  libyaml = True

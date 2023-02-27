@@ -1,0 +1,82 @@
+---
+- name: "Installing Jenkins"
+  hosts: jenkinsmasters
+  become: true
+  tasks:
+    - name: "TASK 1 - dnf update on the hosts."
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+
+    - name: "TASK 2 - Install dependancies."
+      ansible.builtin.dnf:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - "{{ centos_pkgs }}"
+
+    - name: "TASK 3 - Get jenkins Repo keys"
+      ansible.builtin.rpm_key:
+        state: present
+        key: "{{ rpm_key_value }}"
+
+    - name: "TASK 4 - Get jenkins Repo."
+      ansible.builtin.yum_repository:
+        name: "{{ jenkins_centos_repo_name }}"
+        description: "{{ jenkins_centos_repo_des }}"
+        baseurl: "{{ jenkins_centos_repo_path }}"
+        gpgcheck: yes
+
+    - name: "TASK 5 - Install Jenkins packages."
+      ansible.builtin.dnf:
+        name: "jenkins"
+        state: present
+
+    - name: "TASK 6 - Systemd Reload"
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+    - name: "TASK 7 - Enabling and Starting Jenkins service"
+      ansible.builtin.systemd:
+        name: "jenkins"
+        enabled: yes
+        state: started
+
+    - name: "TASK 8 -Ensure firewalld is running"
+      ansible.builtin.systemd:
+        name: "firewalld"
+        enabled: yes
+
+    - name: "TASK 9 -Ensure ports are open on 8080,443,80,22 are open"
+      ansible.builtin.firewalld:
+        port: "{{ item }}"
+        permanent: true
+        state: enabled
+      loop:
+        - "8080/tcp"
+        - "443/tcp"
+        - "80/tcp"
+        - "22/tcp"
+
+    - name: "TASK 10 - Setup Reverse Proxy"
+      ansible.builtin.dnf:
+        name: "nginx"
+        state: present
+
+    - name: "TASK 11 - Ensurs service nginx is started."
+      ansible.builtin.systemd:
+        name: "nginx"
+        state: started
+        enabled: true
+
+    - name: "Adding Nginx reverse proxy configs"
+      ansible.builtin.template:
+        dest: "/etc/nginx/conf.d/jenkins-nginx.conf"
+        src: "../templates/jenkins-nginx.conf"
+      notify: restart nginx
+
+  handlers:
+    - name: restart nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: restarted

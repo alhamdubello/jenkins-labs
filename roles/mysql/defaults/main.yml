@@ -1,0 +1,17 @@
+---
+# vars file for mysql
+#
+##CentOS 8.5 variables##
+centos_8_5_pkgs:
+  - mysql-server
+  - vim
+  - bash-completion
+
+
+
+
+##Ubuntu 22.04 variables##
+
+ubuntu22_04_pkgs:
+  - mysql-server
+  - nano
