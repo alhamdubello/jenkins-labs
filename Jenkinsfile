@@ -7,7 +7,7 @@ pipeline {
 	  stage('AnsibleWorks') {
 	     steps {
 	     sh 'ansible-galaxy collection install -r requirements.yml -i -c'
-	     sh 'ansible-playbook -i inventory --private-key=$ANSIBLE_PRIVATE_KEY playbooks/setup.yml'
+	     sh 'ansible-playbook -i inventory --private-key=$ANSIBLE_PRIVATE_KEY playbooks/setup.yml -u root'
 	     }
 	  }
 	}
