@@ -1,5 +1,5 @@
 pipeline {
-        agent { label 'linux'}
+        agent { label 'jenkins-master'}
 	environment {
 	  ANSIBLE_PRIVATE_KEY=credentials('ansible-private-key')
 	}
